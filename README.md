@@ -13,7 +13,7 @@ minikube addons disable default-storageclass
 minikube addons enable volumesnapshots
 minikube addons enable csi-hostpath-driver # This may take 5 to 10 min
 ```
-> Finally, update the new storage class to be use by default
+> Finally, update the new storage class to be used by default for PersistentVolumeClaim
 ```sh
 kubectl patch storageclass csi-hostpath-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
