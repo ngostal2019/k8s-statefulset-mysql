@@ -17,3 +17,11 @@ minikube addons enable csi-hostpath-driver # This may take 5 to 10 min
 ```sh
 kubectl patch storageclass csi-hostpath-sc -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 ```
+## Apply the Kubernetes Manifest Files
+> Folder structure
+```sh
+├── mysql-configmap.yaml
+├── mysql-stastefulset.yaml
+├── mysql-svc.yaml
+└── README.md
+```
