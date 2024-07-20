@@ -1,0 +1,39 @@
+# Headless service for stable DNS entries of StatefulSet members.
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+    app.kubernetes.io/name: mysql
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  clusterIP: None
+  selector:
+    app: mysql
+---
+# Client service for connecting to any MySQL instance for reads.
+# For writes, you must instead connect to the primary: mysql-0.mysql.
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-read
+  labels:
+    app: mysql
+    app.kubernetes.io/name: mysql
+    readonly: "true"
+spec:
+  ports:
+  - name: mysql
+    port: 3306
+  selector:
+    app: mysql
+kubectl run mysql-client --image=mysql:5.7 -i --rm --restart=Never --\
+  mysql -h mysql-0.mysql <<EOF
+DROP DATABASE test;
+CREATE DATABASE test;
+CREATE TABLE test.messages (message VARCHAR(250));
+INSERT INTO test.messages VALUES ('Hello there, Staline ngoma is testing Mysql on Kubernetes');
+EOF
